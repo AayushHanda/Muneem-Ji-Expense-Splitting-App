@@ -14,6 +14,16 @@ Muneem Ji is a powerful, modern expense tracking and split-bill application buil
 - **Cloud Storage**: Seamlessly upload and manage profile photos via Firebase Storage.
 - **Smart Settle Up**: Intuitive UI to track who owes whom and settle debts quickly.
 
+## 🏗️ Architecture & Folder Structure
+
+The project follows a clean, modular structure centered around the **Provider** pattern for state management and **Service-based** logic for external interactions:
+
+- 📂 `lib/models/`: Data models (Expense, Group, Activity, Comment, etc.).
+- 📂 `lib/providers/`: State management using ChangeNotifiers.
+- 📂 `lib/screens/`: UI screens and page-specific widgets.
+- 📂 `lib/services/`: Direct interactions with Firebase (Auth, Firestore, Storage).
+- 📂 `lib/utils/`: Shared utilities, formatters, and custom splitting algorithms.
+
 ## 🛠️ Tech Stack
 
 - **Framework**: Flutter
@@ -43,6 +53,14 @@ Muneem Ji is a powerful, modern expense tracking and split-bill application buil
     ```bash
     flutter run
     ```
+
+## 🗺️ Future Roadmap
+
+Planned improvements to make Muneem Ji the best expense manager:
+- **Debt Simplification**: Automatically minimize the number of payments required between group members.
+- **Complex Splitting**: Support for unequal splits, percentages, and custom shares for advanced scenarios.
+- **Recurring Expenses**: Automate monthly bills and subscriptions.
+- **Multi-currency Support**: Manage expenses across different regions with live exchange rates.
 
 ## 📄 License
 
