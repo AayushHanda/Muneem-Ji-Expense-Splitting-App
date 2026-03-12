@@ -2,6 +2,19 @@
 
 Muneem Ji is a powerful, modern expense tracking and split-bill application built with Flutter and Firebase. It empowers users to manage daily expenses, split costs with friends, and gain deep insights into their spending habits through beautiful analytics.
 
+## 📸 App Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/dashboard.png" width="30%" alt="Dashboard" />
+  <img src="assets/screenshots/analytics.png" width="30%" alt="Analytics" />
+  <img src="assets/screenshots/new_expense.png" width="30%" alt="New Expense" />
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/profile_light.png" width="30%" alt="Profile Light" />
+  <img src="assets/screenshots/profile_dark.png" width="30%" alt="Profile Dark" />
+</p>
+
 ## 🚀 Key Features
 
 - **Activity Feed**: Stay updated with a social-style log of all expense additions, edits, and settlements.
