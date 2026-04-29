@@ -14,9 +14,11 @@
 ## 📸 App Screenshots
 
 <p align="center">
-  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/caf2de3f-e57f-4be8-b297-314fb2db37be" />
-  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/5acd3e87-dd53-44c0-ad1b-a1ccdbe60c82" />
-  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/5caddb62-5a47-4738-8283-171a7fc119e6" />
+  <img width="20%" alt="image" src="https://github.com/user-attachments/assets/caf2de3f-e57f-4be8-b297-314fb2db37be" />
+  <img width="20%" alt="image" src="https://github.com/user-attachments/assets/5acd3e87-dd53-44c0-ad1b-a1ccdbe60c82" />
+  <img width="20%" alt="image" src="https://github.com/user-attachments/assets/5caddb62-5a47-4738-8283-171a7fc119e6" />
+  <img width="20%" alt="image" src="https://github.com/user-attachments/assets/9caf1e10-9e71-4ea6-8fdd-7031c52e7bb9" />
+  <img width="20%" alt="image" src="https://github.com/user-attachments/assets/5e348209-449a-4a01-af43-3456426ade91" />
 </p>
 
 <p align="center">
