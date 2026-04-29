@@ -31,18 +31,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       setState(() => _uploadingPhoto = true);
 
+      final bytes = await image.readAsBytes();
       final ref = FirebaseStorage.instance.ref().child('profile_photos/$userId.jpg');
+      debugPrint('Uploading ${bytes.length} bytes for user $userId to profile_photos/$userId.jpg');
       
-      // Use putFile for better reliability on mobile
-      final uploadTask = ref.putFile(
-        File(image.path),
+      final uploadTask = ref.putData(
+        bytes,
         SettableMetadata(contentType: 'image/jpeg'),
       );
 
-      // Monitor status
-      await uploadTask.whenComplete(() => null);
+      final TaskSnapshot snapshot = await uploadTask;
+      debugPrint('Upload completed with status: ${snapshot.state}');
       
-      final url = await ref.getDownloadURL();
+      // Add a slightly longer delay if the error persists
+      await Future.delayed(const Duration(seconds: 1));
+      
+      final url = await snapshot.ref.getDownloadURL();
+      debugPrint('Download URL fetched: $url');
 
       await _userService.updateUserPhoto(userId, url);
 

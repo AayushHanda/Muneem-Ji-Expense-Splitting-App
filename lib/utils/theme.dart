@@ -5,10 +5,10 @@ class AppColors {
   // ========================
   // BRAND PALETTE (Logo-matched teal/sky-blue)
   // ========================
-  static const Color brand      = Color(0xFF54C5F8); // Logo sky-blue
-  static const Color brandDark  = Color(0xFF1DA6F0); // Slightly deeper blue
-  static const Color brandDeep  = Color(0xFF0D47A1); // Logo dark-navy accent
-  static const Color brandLight = Color(0xFFB3E5FC); // Very light tint
+  static const Color brand      = Color(0xFF00BFA5); // Teal accent
+  static const Color brandDark  = Color(0xFF00897B); // Deep teal
+  static const Color brandDeep  = Color(0xFF004D40); // Darker teal accent
+  static const Color brandLight = Color(0xFFB2DFDB); // Very light teal
 
   // ========================
   // LIGHT THEME

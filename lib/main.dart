@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'providers/expense_provider.dart';
 import 'providers/theme_provider.dart';
+import 'providers/daily_expenditure_provider.dart';
+import 'providers/chat_provider.dart';
 import 'utils/theme.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
@@ -15,6 +17,11 @@ import 'screens/add_group_screen.dart';
 import 'screens/analytics_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/activity_feed_screen.dart';
+import 'screens/daily_expense_screen.dart';
+import 'screens/daily_expenditure_list_screen.dart';
+import 'screens/add_daily_expenditure_screen.dart';
+import 'screens/expenditure_analytics_screen.dart';
+import 'screens/chat_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +32,7 @@ void main() async {
         appId: '1:671680591026:android:29a8b1aca241a5835fc5ab',
         messagingSenderId: '671680591026',
         projectId: 'muneem-ji-f4b29',
-        storageBucket: 'muneem-ji-f4b29.firebasestorage.app',
+        storageBucket: 'muneem-ji-f4b29.appspot.com',
       ),
     );
 
@@ -59,6 +66,8 @@ class MuneemJiApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ExpenseProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => DailyExpenditureProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -80,6 +89,11 @@ class MuneemJiApp extends StatelessWidget {
               '/analytics': (context) => const AnalyticsScreen(),
               '/profile': (context) => const ProfileScreen(),
               '/activity': (context) => const ActivityFeedScreen(),
+              '/daily_log': (context) => const DailyExpenseScreen(),
+              '/expenditure_list': (context) => const DailyExpenditureListScreen(),
+              '/add_expenditure': (context) => const AddDailyExpenditureScreen(),
+              '/expenditure_analytics': (context) => const ExpenditureAnalyticsScreen(),
+              '/chat': (context) => const ChatScreen(),
             },
           );
         },

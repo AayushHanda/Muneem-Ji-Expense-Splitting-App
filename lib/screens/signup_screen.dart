@@ -70,8 +70,8 @@ class _SignupScreenState extends State<SignupScreen> {
               Center(
                 child: Image.asset(
                   'assets/images/app_logo.png',
-                  height: 80,
-                  width: 80,
+                  height: 140,
+                  width: 140,
                 ),
               ),
               const SizedBox(height: 20),

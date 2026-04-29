@@ -23,6 +23,7 @@ class _SettleUpSheetState extends State<SettleUpSheet> {
   
   bool _isLoading = false;
   AppUser? _selectedFriend;
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -30,15 +31,22 @@ class _SettleUpSheetState extends State<SettleUpSheet> {
     super.dispose();
   }
 
+  void _showSheetError(String message) {
+    setState(() => _errorMessage = message);
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) setState(() => _errorMessage = null);
+    });
+  }
+
   void _submitSettlement() async {
     if (_selectedFriend == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a friend to pay'), backgroundColor: AppColors.error));
+      _showSheetError('Please select a friend to pay');
       return;
     }
     
     final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enter a valid amount'), backgroundColor: AppColors.error));
+      _showSheetError('Enter a valid amount');
       return;
     }
 
@@ -86,10 +94,11 @@ class _SettleUpSheetState extends State<SettleUpSheet> {
         right: 24,
         top: 20,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Center(
             child: Container(
               width: 40,
@@ -123,7 +132,7 @@ class _SettleUpSheetState extends State<SettleUpSheet> {
             const Text('Who are you paying?', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 16),
             SizedBox(
-              height: 110,
+              height: 120,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: myDebts.length,
@@ -213,6 +222,25 @@ class _SettleUpSheetState extends State<SettleUpSheet> {
                 ],
               ),
             ),
+            if (_errorMessage != null) ...[
+              const SizedBox(height: 16),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.error.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.error_outline_rounded, color: AppColors.error, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(child: Text(_errorMessage!, style: const TextStyle(color: AppColors.error, fontSize: 13, fontWeight: FontWeight.w600))),
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
@@ -233,6 +261,7 @@ class _SettleUpSheetState extends State<SettleUpSheet> {
             ),
           ],
         ],
+      ),
       ),
     );
   }

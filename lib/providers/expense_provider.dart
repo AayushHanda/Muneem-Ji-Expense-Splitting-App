@@ -181,4 +181,69 @@ class ExpenseProvider with ChangeNotifier {
 
     return balance;
   }
+
+  // --- Daily Expense Helpers ---
+
+  /// Returns total personal share of expenses for a specific date.
+  double getDailySpending(DateTime date) {
+    if (currentUserId == null) return 0.0;
+    double total = 0;
+    final targetDate = DateTime(date.year, date.month, date.day);
+
+    for (var expense in _expenses) {
+      final expenseDate = DateTime(expense.date.year, expense.date.month, expense.date.day);
+      if (expenseDate == targetDate) {
+        if (expense.paidByUserId == currentUserId || expense.splits.containsKey(currentUserId)) {
+          if (expense.paidByUserId == currentUserId) {
+            double othersOwe = 0;
+            expense.splits.forEach((uid, amt) {
+              if (uid != currentUserId) othersOwe += amt;
+            });
+            total += (expense.totalAmount - othersOwe);
+          } else {
+            total += (expense.splits[currentUserId] ?? 0);
+          }
+        }
+      }
+    }
+    return total;
+  }
+
+  /// Returns average daily spending for a specific month and year.
+  double getDailyAverage(int month, int year) {
+    if (currentUserId == null) return 0.0;
+    
+    double totalMonthSpend = 0;
+    int daysSpent = 0;
+    Set<int> daysWithExpenses = {};
+
+    for (var expense in _expenses) {
+      if (expense.date.month == month && expense.date.year == year) {
+        if (expense.paidByUserId == currentUserId || expense.splits.containsKey(currentUserId)) {
+          double myShare = 0;
+          if (expense.paidByUserId == currentUserId) {
+            double othersOwe = 0;
+            expense.splits.forEach((uid, amt) {
+              if (uid != currentUserId) othersOwe += amt;
+            });
+            myShare = expense.totalAmount - othersOwe;
+          } else {
+            myShare = expense.splits[currentUserId] ?? 0;
+          }
+          totalMonthSpend += myShare;
+          daysWithExpenses.add(expense.date.day);
+        }
+      }
+    }
+
+    final now = DateTime.now();
+    int daysInMonth;
+    if (now.month == month && now.year == year) {
+      daysInMonth = now.day;
+    } else {
+      daysInMonth = DateTime(year, month + 1, 0).day;
+    }
+
+    return daysInMonth > 0 ? totalMonthSpend / daysInMonth : 0;
+  }
 }

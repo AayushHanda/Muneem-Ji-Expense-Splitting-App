@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
     // Default Elevated Button with Gradient (if no color specified)
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(18),
         gradient: color == null
             ? LinearGradient(
                 colors: [
@@ -63,7 +63,7 @@ class CustomButton extends StatelessWidget {
           backgroundColor: Colors.transparent, // Let container handle color/gradient
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         ),
         child: _buildChild(context),
       ),
@@ -88,7 +88,7 @@ class CustomButton extends StatelessWidget {
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: textColor ?? (isOutlined ? Theme.of(context).primaryColor : Colors.black87),
+        color: textColor ?? (isOutlined ? Theme.of(context).primaryColor : Colors.white),
         letterSpacing: 0.5,
       ),
     );

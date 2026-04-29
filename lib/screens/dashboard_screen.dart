@@ -3,14 +3,12 @@ import 'package:provider/provider.dart';
 import '../utils/theme.dart';
 import '../utils/formatters.dart';
 import '../models/app_user.dart';
-import '../models/expense.dart';
-import '../models/settlement.dart';
 import '../models/expense_group.dart';
 import '../models/activity.dart';
 import '../services/user_service.dart';
 import '../providers/expense_provider.dart';
+import '../providers/daily_expenditure_provider.dart';
 import 'package:intl/intl.dart';
-import 'expense_detail_screen.dart';
 import 'friend_detail_screen.dart';
 import 'group_detail_screen.dart';
 import 'settle_up_sheet.dart';
@@ -40,8 +38,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/images/app_logo.png'),
+          padding: const EdgeInsets.all(4.0),
+          child: Image.asset('assets/images/app_logo.png', height: 40, width: 40),
         ),
         title: Text(
           'Muneem Ji',
@@ -51,6 +49,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.auto_awesome_rounded, color: AppColors.brand),
+            onPressed: () => Navigator.pushNamed(context, '/chat'),
+          ),
           IconButton(
             icon: Icon(Icons.bar_chart_rounded,
                 color: isDark ? AppColors.textPrimaryDark : AppColors.brand),
@@ -75,6 +77,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeroCard(context),
+            const SizedBox(height: 20),
+            _buildDailySummaryCard(context),
             const SizedBox(height: 20),
 
             // ── Search Bar ─────────────────────────────────────────
@@ -111,10 +115,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: _buildQuickActionButton(
                       context, 
-                      'Groups', 
-                      Icons.group_work_rounded, 
-                      AppColors.brand,
-                      () => Navigator.pushNamed(context, '/add_group') // For now navigate to add group or maybe we need a groups screen?
+                      'Expenditure', 
+                      Icons.account_balance_wallet_rounded, 
+                      const Color(0xFFE91E63), 
+                      () => Navigator.pushNamed(context, '/expenditure_list')
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -231,6 +235,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ]),
         ),
       ]),
+    );
+  }
+
+  Widget _buildDailySummaryCard(BuildContext context) {
+    final expenseProvider = Provider.of<ExpenseProvider>(context);
+    final dailyProv = Provider.of<DailyExpenditureProvider>(context);
+    
+    final sharedSpentToday = expenseProvider.getDailySpending(DateTime.now());
+    final personalSpentToday = dailyProv.getFilteredExpenditures(
+      filterType: 'Day', 
+      selectedDate: DateTime.now()
+    ).fold(0.0, (sum, item) => sum + item.amount);
+    
+    final totalSpentToday = sharedSpentToday + personalSpentToday;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.cardDark : Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: isDark ? null : [BoxShadow(color: AppColors.brand.withOpacity(0.08), blurRadius: 16, offset: const Offset(0, 4))],
+        border: isDark ? Border.all(color: Colors.white.withOpacity(0.07)) : null,
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.brand.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(Icons.today_rounded, color: AppColors.brand, size: 28),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('TOTAL SPENT TODAY', 
+                  style: TextStyle(color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1.1)),
+                const SizedBox(height: 4),
+                Text(IndianFormatter.currency(totalSpentToday), 
+                  style: TextStyle(color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight, fontSize: 22, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pushNamed(context, '/daily_log'),
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.brand,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              backgroundColor: AppColors.brand.withOpacity(0.08),
+            ),
+            child: const Text('View Log', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -429,11 +493,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildActivityFeed(BuildContext context, {String? filter}) {
-    // Keep this for search results if needed, but it's redundant now with activity feed
     final provider = Provider.of<ExpenseProvider>(context);
     final userId   = provider.currentUserId;
     if (userId == null) return const SizedBox.shrink();
-    return const Center(child: Text("Search activity functionality coming soon"));
+
+    final filteredActivities = provider.activities.where((a) {
+      if (filter == null || filter.isEmpty) return true;
+      final query = filter.toLowerCase();
+      return a.description.toLowerCase().contains(query) || 
+             a.userName.toLowerCase().contains(query);
+    }).toList();
+
+    if (filteredActivities.isEmpty) {
+      return _buildEmptyState('No activities matched your search', Icons.search_off_rounded);
+    }
+
+    return Column(
+      children: filteredActivities.map((activity) => Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark 
+              ? AppColors.surfaceDark 
+              : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: ListTile(
+          onTap: activity.expenseId != null 
+              ? () => Navigator.pushNamed(context, '/expense_detail', arguments: activity.expenseId)
+              : null,
+          leading: CircleAvatar(
+            backgroundColor: _getActivityColor(activity.type).withOpacity(0.12),
+            child: Icon(_getActivityIcon(activity.type), color: _getActivityColor(activity.type), size: 20),
+          ),
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? AppColors.textPrimaryDark 
+                    : AppColors.textPrimaryLight,
+                fontSize: 14,
+              ),
+              children: [
+                TextSpan(text: activity.userName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(text: ' ${activity.description}'),
+              ],
+            ),
+          ),
+          subtitle: Text(
+            DateFormat('MMM dd, hh:mm a').format(activity.timestamp),
+            style: const TextStyle(fontSize: 11, color: Colors.grey),
+          ),
+          trailing: const Icon(Icons.chevron_right_rounded, size: 20, color: Colors.grey),
+        ),
+      )).toList(),
+    );
   }
 
   Widget _buildQuickActionButton(BuildContext context, String label, IconData icon, Color color, VoidCallback onTap) {
