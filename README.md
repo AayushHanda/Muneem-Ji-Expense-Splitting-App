@@ -14,14 +14,27 @@
 ## 📸 App Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/dashboard.png" width="30%" alt="Dashboard" />
-  <img src="assets/screenshots/analytics.png" width="30%" alt="Analytics" />
-  <img src="assets/screenshots/new_expense.png" width="30%" alt="New Expense" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/caf2de3f-e57f-4be8-b297-314fb2db37be" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/5acd3e87-dd53-44c0-ad1b-a1ccdbe60c82" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/5caddb62-5a47-4738-8283-171a7fc119e6" />
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/profile_light.png" width="30%" alt="Profile Light" />
-  <img src="assets/screenshots/profile_dark.png" width="30%" alt="Profile Dark" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/9caf1e10-9e71-4ea6-8fdd-7031c52e7bb9" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/5e348209-449a-4a01-af43-3456426ade91" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/58432629-3add-4dd6-b6f3-59693d1575c4" />
+</p>
+
+<p align="center">
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/3b4bc634-5b66-431d-a7f7-069f72c48d1a" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/d6aafd77-8d38-423a-af63-8912b50d778f" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/f4ccf06a-d3f0-46d9-a61e-26cfece459d1" />
+</p>
+
+<p align="center">
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/3820d890-90cb-43e9-8621-08720fd98c40" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/b38e7eb8-c5a1-4fed-a249-d25957dc3d18" />
+  <img width="30%" alt="image" src="https://github.com/user-attachments/assets/f12c156f-3fc3-4899-9014-a22344edb26e" />
 </p>
 
 ---
